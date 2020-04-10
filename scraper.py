@@ -55,8 +55,8 @@ if not DEBUG:
 
 WEB_DRIVER_OPTIONS.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36")
 
-scraperwiki.sqlite.execute("CREATE TABLE IF NOT EXISTS 'data' ('application' TEXT, 'dateAdded' DATE, 'decision' TEXT, 'address' TEXT, 'proposal' TEXT, 'applicationType' TEXT, 'applicationURL' TEXT, 'documentsURL' TEXT, 'searchName' TEXT,'amendedDateTime' DATETIME, PRIMARY KEY('application','dateAdded','decision'))")
-scraperwiki.sqlite.execute("CREATE UNIQUE INDEX IF NOT EXISTS 'data_unique_key' ON 'data' ('application','dateAdded','decision')")
+#scraperwiki.sqlite.execute("CREATE TABLE IF NOT EXISTS 'data' ('application' TEXT, 'dateAdded' DATE, 'decision' TEXT, 'address' TEXT, 'proposal' TEXT, 'applicationType' TEXT, 'applicationURL' TEXT, 'documentsURL' TEXT, 'searchName' TEXT,'amendedDateTime' DATETIME, PRIMARY KEY('application','dateAdded','decision'))")
+#scraperwiki.sqlite.execute("CREATE UNIQUE INDEX IF NOT EXISTS 'data_unique_key' ON 'data' ('application','dateAdded','decision')")
 scraperwiki.sqlite.save(unique_keys=['application','dateAdded','decision'], data={"application": "1", "dateAdded":datetime.today().strftime('%d/%m/%Y'), "decision":"n/a", "address":"n/a", "proposal":"n/a", "applicationType":"n/a", "applicationURL":"n/a", "documentsURL":"n/a", "searchName":"n/a", "amendedDateTime":datetime.now()})
 
 #driver = webdriver.Chrome(options=WEB_DRIVER_OPTIONS,executable_path='/usr/local/bin/chromedriver')
@@ -201,7 +201,7 @@ for k, v in SEARCH_ITEMS.items():
 
                 amendedDateTime = datetime.now()
 
-                scraperwiki.sqlite.execute("INSERT OR IGNORE INTO 'data' VALUES (?,?,?,?,?,?,?,?,?,?)", (application,dateAdded,decision,address,proposal,applicationType,applicationURL,documentsURL,searchName,amendedDateTime))
+                #scraperwiki.sqlite.execute("INSERT OR IGNORE INTO 'data' VALUES (?,?,?,?,?,?,?,?,?,?)", (application,dateAdded,decision,address,proposal,applicationType,applicationURL,documentsURL,searchName,amendedDateTime))
             #if there is a next button click it then get rows and loop over them again
             try:
                 nextPageBtn = WebDriverWait(driver, DELAY_SECS).until(EC.presence_of_element_located((By.XPATH, '//*[@id="ctl00_MainContent_grdResults_ctl00"]/tfoot/tr/td/table/tbody/tr/td/div[3]/input[1]')))
