@@ -80,7 +80,7 @@ for k, v in SEARCH_ITEMS.items():
             roadName = v
             #set road name
             roadNameInput = driver.find_element_by_id('ctl00_MainContent_RadStreetName_Input')
-            roadNameInput.send_keys(roadName)
+            roadNameInput.send_keys(roadName.replace('#',''))
         elif 'WARD' in k:
             roadName = ''
             wardName = v
@@ -174,10 +174,10 @@ for k, v in SEARCH_ITEMS.items():
                     applicationType = 'Extension'
                 elif 'alteration' in proposal.lower():
                     applicationType = 'Alteration'
-                elif 'erection of' in proposal.lower():
-                    applicationType = 'New Build'
                 elif 'outline' in proposal.lower():
                     applicationType = 'Outline Planning'
+                elif 'erection of' in proposal.lower():
+                    applicationType = 'New Build'
                 elif 'felling' in proposal.lower():
                     applicationType = 'Trees'
                 elif 'tree' in proposal.lower():
