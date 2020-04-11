@@ -1,4 +1,4 @@
 -e git+http://github.com/andylolz/scraperwiki-python.git@morph_defaults#egg=scraperwiki
 
-selenium==3.13.0
-beautifulsoup4==4.6.3
+selenium==3.141.0
+beautifulsoup4==4.9.0
