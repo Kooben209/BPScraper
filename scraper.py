@@ -2,7 +2,7 @@
 # including some code snippets below that you should find helpful
 
 import scraperwiki
-import lxml.html
+#import lxml.html
 #
 # # Read in a page
 #html = scraperwiki.scrape("http://foo.com")
