@@ -57,8 +57,8 @@ if not DEBUG:
 
 WEB_DRIVER_OPTIONS.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36")
 
-#scraperwiki.sqlite.execute("CREATE TABLE IF NOT EXISTS 'data' ('application' TEXT, 'dateAdded' DATE, 'decision' TEXT, 'address' TEXT, 'proposal' TEXT, 'applicationType' TEXT, 'applicationURL' TEXT, 'documentsURL' TEXT, 'searchName' TEXT,'amendedDateTime' DATETIME, PRIMARY KEY('application','dateAdded','decision'))")
-#scraperwiki.sqlite.execute("CREATE UNIQUE INDEX IF NOT EXISTS 'data_unique_key' ON 'data' ('application','dateAdded','decision')")
+scraperwiki.sqlite.execute("CREATE TABLE IF NOT EXISTS 'data' ('application' TEXT, 'dateAdded' DATE, 'decision' TEXT, 'address' TEXT, 'proposal' TEXT, 'applicationType' TEXT, 'applicationURL' TEXT, 'documentsURL' TEXT, 'searchName' TEXT,'amendedDateTime' DATETIME, PRIMARY KEY('application','dateAdded','decision'))")
+scraperwiki.sqlite.execute("CREATE UNIQUE INDEX IF NOT EXISTS 'data_unique_key' ON 'data' ('application','dateAdded','decision')")
 
 #driver = webdriver.Chrome(options=WEB_DRIVER_OPTIONS,executable_path='/usr/local/bin/chromedriver')
 driver = webdriver.Chrome(options=WEB_DRIVER_OPTIONS)
