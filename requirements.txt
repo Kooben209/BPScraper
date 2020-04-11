@@ -1,1 +1,3 @@
--e git+http://github.com/openaustralia/scraperwiki-python.git@morph_defaults#egg=scraperwiki
+selenium==3.141.0
+scraperwiki==0.5.1
+beautifulsoup4==4.9.0
