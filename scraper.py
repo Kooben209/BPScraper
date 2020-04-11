@@ -202,10 +202,11 @@ for k, v in SEARCH_ITEMS.items():
 
                 amendedDateTime = datetime.now()
 
-		if DEBUG:
-                	print("write to db")
+                if DEBUG:
+                    print("write to db")
                 #scraperwiki.sqlite.execute("INSERT OR IGNORE INTO 'data' VALUES (?,?,?,?,?,?,?,?,?,?)", (application,dateAdded,decision,address,proposal,applicationType,applicationURL,documentsURL,searchName,amendedDateTime))
 		scraperwiki.sqlite.save(unique_keys=['name'], data={"name": "susan", "occupation": "software developer"})
+
             #if there is a next button click it then get rows and loop over them again
             try:
                 nextPageBtn = WebDriverWait(driver, DELAY_SECS).until(EC.presence_of_element_located((By.XPATH, '//*[@id="ctl00_MainContent_grdResults_ctl00"]/tfoot/tr/td/table/tbody/tr/td/div[3]/input[1]')))
