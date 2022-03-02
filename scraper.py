@@ -13,12 +13,17 @@ from bs4 import BeautifulSoup
 import scraperwiki
 import setEnv
 
+import alterDatabase
+
 os.environ['SCRAPERWIKI_DATABASE_NAME'] = 'sqlite:///data.sqlite'
 
 DEBUG = 0
 if os.environ.get("MORPH_DEBUG") is not None:
 	DEBUG = int(os.environ["MORPH_DEBUG"])
 
+DOMAIN = '/'
+if os.environ.get("MORPH_DOMAIN") is not None:
+	DOMAIN = os.environ["MORPH_DOMAIN"]
 
 SLEEP_SECS = 5
 if os.environ.get("MORPH_SLEEP") is not None:
@@ -201,10 +206,44 @@ for k, v in SEARCH_ITEMS.items():
                     documentsURL = '#'
 
                 amendedDateTime = datetime.now()
+                
+                #get other details from DisplayRecord
+                #get href from a tag with id containing string _hypDisplayRecord 
+                displayRecordURL = row.find("a", {"id" : lambda L: L and L.endswith('_hypDisplayRecord')}).get('href')
+                #follow link in new window and get details
+                main_window= driver.current_window_handle
+                #Open a new tab in blank
+                driver.execute_script("window.open(''),'_blannk'")
+                # Switch to the new window
+                driver.switch_to.window(driver.window_handles[1])
+                #Change the url in the .get**
+                driver.get(DOMAIN+displayRecordURL)
+                time.sleep(SLEEP_SECS)
+                agent = driver.find_element_by_id('MainContent_txtAgtName').get_attribute('value')
+                caseOfficer = driver.find_element_by_id('MainContent_txtCaseOfficer').get_attribute('value')
+                applicant = driver.find_element_by_id('MainContent_txtAppName').get_attribute('value')
+                appOfficialType = driver.find_element_by_id('MainContent_txtType').get_attribute('value')
+                decisionMethod = driver.find_element_by_id('MainContent_txtCommitteeDelegated').get_attribute('value')
+                receivedDate = driver.find_element_by_id('MainContent_txtReceivedDate').get_attribute('value')
+                advertExpiry = driver.find_element_by_id('MainContent_txtAdvertExpiry').get_attribute('value')
+                siteNoticeExpiry = driver.find_element_by_id('MainContent_txtSiteNoticeExpiry').get_attribute('value')
+                validDate = driver.find_element_by_id('MainContent_txtValidDate').get_attribute('value')
+                neighbourExpiry = driver.find_element_by_id('MainContent_txtNeighbourExpiry').get_attribute('value')
+                issueDate = driver.find_element_by_id('MainContent_txtIssueDate').get_attribute('value')
+                decisionDate = driver.find_element_by_id('MainContent_txtDecisionDate').get_attribute('value')
+                committeeDelegatedDate = driver.find_element_by_id('MainContent_txtCommitteeDelegatedDate').get_attribute('value')
+                applicationStatus = driver.find_element_by_id('MainContent_tdApplicationStatus').get_attribute('value')
+                
+                
+                
+                #Close Current Tab
+                driver.close()
+                #Focus to the main window
+                driver.switch_to.window(main_window)
 
                 if DEBUG:
                     print("write to db")
-                scraperwiki.sqlite.execute("INSERT OR IGNORE INTO 'data' VALUES (?,?,?,?,?,?,?,?,?,?)", (application,dateAdded,decision,address,proposal,applicationType,applicationURL,documentsURL,searchName,amendedDateTime))
+                scraperwiki.sqlite.execute("INSERT OR IGNORE INTO 'data' VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (application,dateAdded,decision,address,proposal,applicationType,applicationURL,documentsURL,searchName,amendedDateTime,agent,caseOfficer,applicant,appOfficialType,decisionMethod,decisionDate,siteNoticeExpiry))
             #if there is a next button click it then get rows and loop over them again
             try:
                 nextPageBtn = WebDriverWait(driver, DELAY_SECS).until(EC.presence_of_element_located((By.XPATH, '//*[@id="ctl00_MainContent_grdResults_ctl00"]/tfoot/tr/td/table/tbody/tr/td/div[3]/input[1]')))
