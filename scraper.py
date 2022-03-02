@@ -2,7 +2,7 @@ import os
 import sys
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import TimeoutException, WebDriverException
+from selenium.common.exceptions import TimeoutException, WebDriverException ,NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -16,6 +16,12 @@ import setEnv
 import alterDatabase
 
 os.environ['SCRAPERWIKI_DATABASE_NAME'] = 'sqlite:///data.sqlite'
+
+def safe_execute(default, exception, function, *args):
+    try:
+        return function(*args).get_attribute('value')
+    except exception:
+        return default
 
 DEBUG = 0
 if os.environ.get("MORPH_DEBUG") is not None:
@@ -219,23 +225,22 @@ for k, v in SEARCH_ITEMS.items():
                 #Change the url in the .get**
                 driver.get(DOMAIN+displayRecordURL)
                 time.sleep(SLEEP_SECS)
-                agent = driver.find_element_by_id('MainContent_txtAgtName').get_attribute('value')
-                caseOfficer = driver.find_element_by_id('MainContent_txtCaseOfficer').get_attribute('value')
-                applicant = driver.find_element_by_id('MainContent_txtAppName').get_attribute('value')
-                appOfficialType = driver.find_element_by_id('MainContent_txtType').get_attribute('value')
-                decisionMethod = driver.find_element_by_id('MainContent_txtCommitteeDelegated').get_attribute('value')
-                receivedDate = driver.find_element_by_id('MainContent_txtReceivedDate').get_attribute('value')
-                advertExpiry = driver.find_element_by_id('MainContent_txtAdvertExpiry').get_attribute('value')
-                siteNoticeExpiry = driver.find_element_by_id('MainContent_txtSiteNoticeExpiry').get_attribute('value')
-                validDate = driver.find_element_by_id('MainContent_txtValidDate').get_attribute('value')
-                neighbourExpiry = driver.find_element_by_id('MainContent_txtNeighbourExpiry').get_attribute('value')
-                issueDate = driver.find_element_by_id('MainContent_txtIssueDate').get_attribute('value')
-                decisionDate = driver.find_element_by_id('MainContent_txtDecisionDate').get_attribute('value')
-                committeeDelegatedDate = driver.find_element_by_id('MainContent_txtCommitteeDelegatedDate').get_attribute('value')
-                applicationStatus = driver.find_element_by_id('MainContent_tdApplicationStatus').get_attribute('value')
-                
-                
-                
+
+                agent = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtAgtName")
+                caseOfficer = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtCaseOfficer")
+                applicant = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtAppName")
+                appOfficialType = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtType")
+                decisionMethod = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtCommitteeDelegated")
+                receivedDate = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtReceivedDate")
+                advertExpiry = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtAdvertExpiry")
+                siteNoticeExpiry = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtSiteNoticeExpiry")
+                validDate = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtValidDate")
+                neighbourExpiry = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtNeighbourExpiry")
+                issueDate = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtIssueDate")
+                decisionDate = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtDecisionDate")
+                committeeDelegatedDate = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_txtCommitteeDelegatedDate")
+                applicationStatus = safe_execute("",NoSuchElementException,driver.find_element_by_id,"MainContent_tdApplicationStatus")
+
                 #Close Current Tab
                 driver.close()
                 #Focus to the main window
