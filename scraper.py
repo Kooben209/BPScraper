@@ -82,13 +82,17 @@ fromDate = fromDate.strftime("%d/%m/%Y")
 #initial page load
 driver.get(START_URL)
 
+agreeBtn = driver.find_element_by_id('ctl00_MainContent_btnAccept')
+agreeBtn.click()
+time.sleep(5)
+
 for k, v in SEARCH_ITEMS.items():
     searchName = k.replace('MORPH_SEARCH_','')
     #run search twice, once for applications received and once for decisions added
     i = 0
     while i < 2:
         #reset form
-        resetBtn = driver.find_element_by_id('MainContent_btnReset')
+        resetBtn = driver.find_element_by_id('ctl00_MainContent_btnReset')
         resetBtn.click()
         
         if 'ROAD' in k:
@@ -118,10 +122,10 @@ for k, v in SEARCH_ITEMS.items():
             searchCriteria = "road name: "+roadName+" - ward name: "+wardName
             print("running for for "+searchCriteria+" between "+fromDate+" and "+todayDate)
         
-        appsReceivedDateFromInput= driver.find_element_by_id('MainContent_txtDateReceivedFrom')
-        appsReceivedDateToInput= driver.find_element_by_id('MainContent_txtDateReceivedTo')
-        appsDecisionDateFromInput= driver.find_element_by_id('MainContent_txtDateIssuedFrom')
-        appsDecisionDateToInput= driver.find_element_by_id('MainContent_txtDateIssuedTo')
+        appsReceivedDateFromInput= driver.find_element_by_id('ctl00_MainContent_txtDateReceivedFrom')
+        appsReceivedDateToInput= driver.find_element_by_id('ctl00_MainContent_txtDateReceivedTo')
+        appsDecisionDateFromInput= driver.find_element_by_id('ctl00_MainContent_txtDateIssuedFrom')
+        appsDecisionDateToInput= driver.find_element_by_id('ctl00_MainContent_txtDateIssuedTo')
 
         if i == 0:
             if DEBUG:
